@@ -2,9 +2,21 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-The Philips CD-i application for [webЯcade](https://www.webrcade.com) is an emulator for the [Philips CD-i game console](https://en.wikipedia.org/wiki/CD-i).
+The Philips CD-i application for [webЯcade](https://www.webrcade.com) is an emulator for the [Philips CD-i](https://en.wikipedia.org/wiki/CD-i) multimedia entertainment system.
 
-The underlying emulator is a MAME-based core.
+The underlying emulator is the Libretro port of [MAME](https://github.com/libretro/mame).
+
+<p align="center">
+ <a href="https://play.webrcade.com">
+  <img src="https://docs.webrcade.com/assets/images/apps/cdi.png" width="90%">
+ </a>
+ <br>
+ <i>Philips CD-i</i>
+</p>
+
+## Documentation
+
+The [Philips CD-i Application Documentation](https://docs.webrcade.com/apps/emulators/cdi/) includes [keyboard](https://docs.webrcade.com/apps/emulators/cdi/#keyboard) and [gamepad](https://docs.webrcade.com/apps/emulators/cdi/#gamepad) control mappings, information related to [internal save memory](https://docs.webrcade.com/apps/emulators/cdi/#internal-save-memory), and details regarding the use of the emulator within a [webЯcade feed](https://docs.webrcade.com/apps/emulators/cdi/#feed).
 
 ## LICENSE
 
@@ -16,4 +28,4 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
 ---
 
-The license presented above is limited to the Philips CD-i application for [webЯcade](https://www.webrcade.com). The underlying MAME project retains its own specific licensing.
+The license presented above is limited to the Philips CD-i application for [webЯcade](https://www.webrcade.com). The underlying [Libretro MAME](https://github.com/libretro/mame) project retains its own specific licensing.
