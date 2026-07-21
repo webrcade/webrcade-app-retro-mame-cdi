@@ -6,8 +6,9 @@ import {
 
 export class Emulator extends RetroAppWrapper {
 
-  GAME_SRAM_NAME = 'game.srm';
+  GAME_SRAM_NAME = 'game';
   SAVE_NAME = 'sav';
+  NVRAM_DIR = '/home/web_user/retroarch/userdata/saves/mame/nvram';
 
   MOUSE_LEFT = 1;
   MOUSE_MIDDLE = 1 << 1;
@@ -134,6 +135,8 @@ export class Emulator extends RetroAppWrapper {
     try { FS.mkdir('/home/web_user/retroarch/userdata/system/mame'); } catch (e) {}
     try { FS.mkdir('/home/web_user/retroarch/userdata/system/mame/bios'); } catch (e) {}
     try { FS.mkdir(this.RA_DIR + 'cdimono1'); } catch (e) {}
+    try { FS.mkdir('/home/web_user/retroarch/userdata/saves/mame'); } catch (e) {}
+    try { FS.mkdir(this.NVRAM_DIR); } catch (e) {}
 
     // Write MAME.opt config
     const mameOpt =
@@ -222,7 +225,7 @@ export class Emulator extends RetroAppWrapper {
 
       Module._cmd_savefiles();
 
-      const path = `/home/web_user/retroarch/userdata/saves/${this.GAME_SRAM_NAME}`;
+      const path = `${this.NVRAM_DIR}/${this.GAME_SRAM_NAME}`;
       LOG.info('Checking: ' + path);
       const files = [];
       try {
@@ -262,11 +265,9 @@ export class Emulator extends RetroAppWrapper {
         for (let i = 0; i < files.length; i++) {
           const f = files[i];
           if (f.name === this.SAVE_NAME) {
-            LOG.info(`writing ${this.GAME_SRAM_NAME} file`);
-            FS.writeFile(
-              `/home/web_user/retroarch/userdata/saves/${this.GAME_SRAM_NAME}`,
-              f.content,
-            );
+            const path = `${this.NVRAM_DIR}/${this.GAME_SRAM_NAME}`;
+            LOG.info(`writing ${path} file`);
+            FS.writeFile(path, f.content);
           }
         }
         await this.getSaveManager().checkFilesChanged(files);
