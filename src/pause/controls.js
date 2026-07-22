@@ -8,9 +8,9 @@ export class GamepadControlsTab extends ControlsTab {
       <>
         {this.renderControl('lanalog', 'Move Cursor')}
         {this.renderControl('dpad', 'Move Cursor')}
-        {this.renderControl('a', 'Button 1')}
-        {this.renderControl('b', 'Button 2')}
-        {this.renderControl('x', 'Button 3')}
+        {this.renderControl('x', 'Button 1')}
+        {this.renderControl('a', 'Button 2')}
+        {this.renderControl('b', 'Button 3')}
       </>
     );
   }
@@ -26,7 +26,7 @@ export class KeyboardControlsTab extends ControlsTab {
         {this.renderKey('ArrowRight', 'Move Cursor Right')}
         {this.renderKey('KeyZ', 'Button 1')}
         {this.renderKey('KeyX', 'Button 2')}
-        {this.renderKey('KeyA', 'Button 3')}
+        {this.renderKey('KeyC', 'Button 3')}
       </>
     );
   }

@@ -1,6 +1,11 @@
 import {
+  Controller,
+  Controllers,
   RetroAppWrapper,
+  KeyCodeToControlMapping,
   DisplayLoop,
+  CIDS,
+  KCODES,
   LOG,
 } from '@webrcade/app-common';
 
@@ -8,7 +13,13 @@ export class Emulator extends RetroAppWrapper {
 
   GAME_SRAM_NAME = 'game';
   SAVE_NAME = 'sav';
-  NVRAM_DIR = '/home/web_user/retroarch/userdata/saves/mame/nvram';
+
+  // Every CD-i disc is staged to the same local filename ("game.chd"), so
+  // MAME's own nvram_filename() can't tell games apart (see machine.cpp).
+  // Keep different games' NVRAM isolated here instead, by uid.
+  get NVRAM_DIR() {
+    return `/home/web_user/retroarch/userdata/saves/mame/nvram/${this.uid}`;
+  }
 
   MOUSE_LEFT = 1;
   MOUSE_MIDDLE = 1 << 1;
@@ -36,13 +47,13 @@ export class Emulator extends RetroAppWrapper {
     };
     document.onmousedown = (e) => {
       if (e.button === 0) this.mouseButtons |= this.MOUSE_LEFT;
-      else if (e.button === 1) this.mouseButtons |= this.MOUSE_MIDDLE;
-      else if (e.button === 2) this.mouseButtons |= this.MOUSE_RIGHT;
+      if (e.button === 1) this.mouseButtons |= this.MOUSE_MIDDLE;
+      if (e.button === 2) this.mouseButtons |= this.MOUSE_RIGHT;
     };
     document.onmouseup = (e) => {
       if (e.button === 0) this.mouseButtons &= ~this.MOUSE_LEFT;
-      else if (e.button === 1) this.mouseButtons &= ~this.MOUSE_MIDDLE;
-      else if (e.button === 2) this.mouseButtons &= ~this.MOUSE_RIGHT;
+      if (e.button === 1) this.mouseButtons &= ~this.MOUSE_MIDDLE;
+      if (e.button === 2) this.mouseButtons &= ~this.MOUSE_RIGHT;
     };
     document.oncontextmenu = (e) => e.preventDefault();
 
@@ -52,6 +63,28 @@ export class Emulator extends RetroAppWrapper {
         this.mouseY = 0;
       }
     });
+  }
+
+  createControllers() {
+    return new Controllers([
+      new Controller(
+        new KeyCodeToControlMapping({
+          [KCODES.ARROW_UP]: CIDS.UP,
+          [KCODES.ARROW_DOWN]: CIDS.DOWN,
+          [KCODES.ARROW_RIGHT]: CIDS.RIGHT,
+          [KCODES.ARROW_LEFT]: CIDS.LEFT,
+          [KCODES.Z]: CIDS.X,
+          [KCODES.X]: CIDS.A,
+          [KCODES.C]: CIDS.B,
+          [KCODES.SHIFT_RIGHT]: CIDS.SELECT,
+          [KCODES.ENTER]: CIDS.START,
+          [KCODES.ESCAPE]: CIDS.ESCAPE
+        })
+      ),
+      new Controller(),
+      new Controller(),
+      new Controller(),
+    ]);
   }
 
   setPointerLock(lock) {
@@ -136,6 +169,7 @@ export class Emulator extends RetroAppWrapper {
     try { FS.mkdir('/home/web_user/retroarch/userdata/system/mame/bios'); } catch (e) {}
     try { FS.mkdir(this.RA_DIR + 'cdimono1'); } catch (e) {}
     try { FS.mkdir('/home/web_user/retroarch/userdata/saves/mame'); } catch (e) {}
+    try { FS.mkdir('/home/web_user/retroarch/userdata/saves/mame/nvram'); } catch (e) {}
     try { FS.mkdir(this.NVRAM_DIR); } catch (e) {}
 
     // Write MAME.opt config
