@@ -29,7 +29,9 @@ class App extends WebrcadeRetroApp {
   }
 
   getBiosUrls(appProps) {
-    return appProps.philipscdi_bios || [];
+    const bios = appProps.philipscdi_bios;
+    if (!bios) return [];
+    return Array.isArray(bios) ? bios : [bios];
   }
 
   renderPauseScreen() {
