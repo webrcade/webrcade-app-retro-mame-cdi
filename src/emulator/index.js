@@ -1,7 +1,7 @@
 import {
+  BasicRetroAppWrapper,
   Controller,
   Controllers,
-  RetroAppWrapper,
   KeyCodeToControlMapping,
   DisplayLoop,
   CIDS,
@@ -9,7 +9,7 @@ import {
   LOG,
 } from '@webrcade/app-common';
 
-export class Emulator extends RetroAppWrapper {
+export class Emulator extends BasicRetroAppWrapper {
 
   GAME_SRAM_NAME = 'game';
   SAVE_NAME = 'sav';
@@ -126,7 +126,17 @@ export class Emulator extends RetroAppWrapper {
     if (!this.gameRunning) {
       this.setGameRunning(true);
     }
+
+    // Touch/mouse/keyboard interaction detection + on-screen touch overlay
+    // gating is inherited from BasicRetroAppWrapper.
+    super.onFrame();
   }
+
+  // Base class default pauses on any tap anywhere on screen -- redundant
+  // (and disruptive) now that there's a dedicated Pause button in the
+  // touch overlay. Same override every other TouchOverlay app uses for
+  // the same reason.
+  createTouchListener() {}
 
   getScriptUrl() {
     return 'js/cdi_libretro.js';

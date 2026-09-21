@@ -121,7 +121,7 @@ export class EmulatorPauseScreen extends Component {
           />
         ) : null}
         {mode === ModeEnum.SETTINGS ? (
-          <CdiSettingsEditor emulator={emulator} onClose={closeCallback} />
+          <CdiSettingsEditor emulator={emulator} onClose={closeCallback} showOnScreenControls={true} />
         ) : null}
         {mode === ModeEnum.STATE ? (
           <SaveStatesEditor

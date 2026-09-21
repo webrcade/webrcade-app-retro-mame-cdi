@@ -28,6 +28,8 @@ export class CdiSettingsEditor extends Component {
       bilinearMode: emulator.getPrefs().getBilinearMode(),
       origScreenSize: emulator.getPrefs().getScreenSize(),
       screenSize: emulator.getPrefs().getScreenSize(),
+      origScreenControls: emulator.getPrefs().getScreenControls(),
+      screenControls: emulator.getPrefs().getScreenControls(),
     };
 
     this.shaderService = emulator.getShadersService();
@@ -37,7 +39,7 @@ export class CdiSettingsEditor extends Component {
   }
 
   render() {
-    const { emulator, onClose } = this.props;
+    const { emulator, onClose, showOnScreenControls } = this.props;
     const { tabIndex, values, focusGridComps } = this.state;
 
     const setFocusGridComps = (comps) => this.setState({ focusGridComps: comps });
@@ -60,6 +62,11 @@ export class CdiSettingsEditor extends Component {
             emulator.updateScreenSize();
             change = true;
           }
+          if (values.origScreenControls !== values.screenControls) {
+            emulator.getPrefs().setScreenControls(values.screenControls);
+            emulator.updateOnScreenControls();
+            change = true;
+          }
           if (change) emulator.getPrefs().save();
 
           await this.shaderService.setShader(values.shaderId);
@@ -79,6 +86,7 @@ export class CdiSettingsEditor extends Component {
                 emulator={emulator}
                 isBilinearMode={true}
                 isActive={tabIndex === 0}
+                showOnScreenControls={showOnScreenControls}
                 setFocusGridComps={setFocusGridComps}
                 values={values}
                 setValues={setValues}
